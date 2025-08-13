@@ -12,6 +12,7 @@ import Dues from './pages/Dues';
 import Food from './pages/Food';
 import Calendar from './pages/Calendar';
 import InviteSignup from './pages/InviteSignup';
+import AuthCallback from './pages/AuthCallback';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 // Small icon mapper using emojis to avoid extra icon packages
@@ -136,6 +137,7 @@ function AppShell() {
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/invite-signup" element={<InviteSignup />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
           </Routes>
         </div>
       </main>

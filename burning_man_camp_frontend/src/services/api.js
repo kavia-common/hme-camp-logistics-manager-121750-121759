@@ -6,7 +6,16 @@
  * - Sends/receives JSON
  * - Throws on non-2xx responses
  */
+import { supabase } from '../utils/supabase';
+
 const API_BASE = process.env.REACT_APP_API_BASE_URL || '';
+
+async function getAuthHeader() {
+  // Attach Supabase JWT if present so backend can verify user
+  const { data } = await supabase.auth.getSession();
+  const token = data?.session?.access_token;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 async function handleResponse(res) {
   const contentType = res.headers.get('content-type') || '';
@@ -26,9 +35,10 @@ async function handleResponse(res) {
 // PUBLIC_INTERFACE
 export async function apiGet(path) {
   /** HTTP GET helper */
+  const authHeader = await getAuthHeader();
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'GET',
-    headers: { 'Accept': 'application/json' },
+    headers: { 'Accept': 'application/json', ...authHeader },
     credentials: 'include',
   });
   return handleResponse(res);
@@ -37,9 +47,10 @@ export async function apiGet(path) {
 // PUBLIC_INTERFACE
 export async function apiPost(path, body) {
   /** HTTP POST helper */
+  const authHeader = await getAuthHeader();
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'POST',
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', ...authHeader },
     credentials: 'include',
     body: JSON.stringify(body ?? {}),
   });
@@ -49,9 +60,10 @@ export async function apiPost(path, body) {
 // PUBLIC_INTERFACE
 export async function apiPut(path, body) {
   /** HTTP PUT helper */
+  const authHeader = await getAuthHeader();
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'PUT',
-    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', ...authHeader },
     credentials: 'include',
     body: JSON.stringify(body ?? {}),
   });
@@ -61,9 +73,10 @@ export async function apiPut(path, body) {
 // PUBLIC_INTERFACE
 export async function apiDelete(path) {
   /** HTTP DELETE helper */
+  const authHeader = await getAuthHeader();
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'DELETE',
-    headers: { 'Accept': 'application/json' },
+    headers: { 'Accept': 'application/json', ...authHeader },
     credentials: 'include',
   });
   return handleResponse(res);
