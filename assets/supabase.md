@@ -213,6 +213,13 @@ Usage notes:
 - isAdmin is based on profiles.is_admin; Populate that via admin dashboard or SQL
 
 Troubleshooting:
+- If you see "supabaseUrl is required" at runtime, the frontend doesn't have REACT_APP_SUPABASE_URL/REACT_APP_SUPABASE_KEY at build time. Fix:
+  1) Copy .env.example to .env in the frontend root, and fill in values:
+     - REACT_APP_SUPABASE_URL=https://<your-project>.supabase.co
+     - REACT_APP_SUPABASE_KEY=<your-anon-key>
+     - Optional: REACT_APP_SITE_URL, REACT_APP_API_BASE_URL, REACT_APP_VENMO_HANDLE
+  2) Restart the dev server (env vars are baked at build time in CRA).
+  3) Never commit secrets (.env) to source control.
 - If redirects fail, confirm the Redirect URL allowlist in Supabase Authentication settings includes your dev and prod URLs with /** wildcard.
 - If API requests to your future backend need the Supabase JWT, api.js now attaches the bearer token automatically when available.
 
