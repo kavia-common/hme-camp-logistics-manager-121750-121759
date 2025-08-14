@@ -13,3 +13,13 @@ export function getURL() {
   }
   return url;
 }
+
+// PUBLIC_INTERFACE
+export function buildRedirectURL(path) {
+  /** Build a full redirect URL that targets a client-side route when using HashRouter.
+   * Example: buildRedirectURL('auth/callback') => https://host/#/auth/callback
+   */
+  const base = getURL();
+  const clean = String(path || '').replace(/^\/+/, '');
+  return `${base}#/${clean}`;
+}

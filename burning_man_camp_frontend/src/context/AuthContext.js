@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { supabase } from '../utils/supabase';
-import { getURL } from '../utils/getURL';
+import { getURL, buildRedirectURL } from '../utils/getURL';
 
 const AuthContext = createContext(null);
 
@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
           email,
           password,
           options: {
-            emailRedirectTo: `${getURL()}auth/callback`,
+            emailRedirectTo: buildRedirectURL('auth/callback'),
           },
         });
         if (error) throw error;
@@ -79,7 +79,7 @@ export function AuthProvider({ children }) {
         const { data, error } = await supabase.auth.signInWithOAuth({
           provider,
           options: {
-            redirectTo: `${getURL()}auth/callback`,
+            redirectTo: buildRedirectURL('auth/callback'),
           },
         });
         if (error) throw error;
@@ -89,7 +89,7 @@ export function AuthProvider({ children }) {
       // Password reset
       async resetPassword(email) {
         const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${getURL()}auth/reset-password`,
+          redirectTo: buildRedirectURL('auth/reset-password'),
         });
         if (error) throw error;
         return data;

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { HashRouter, NavLink, Route, Routes } from 'react-router-dom';
 import './App.css';
 
 import Dashboard from './pages/Dashboard';
@@ -150,9 +150,9 @@ function App() {
   /** Root component: wraps app in providers and router */
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <HashRouter>
         <AppShell />
-      </BrowserRouter>
+      </HashRouter>
     </AuthProvider>
   );
 }
